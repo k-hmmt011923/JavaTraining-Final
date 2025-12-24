@@ -1,149 +1,69 @@
-🚀 第4週課題：Spring BootでREST APIを作ろう 〜環境構築と最小プロダクト〜
+# JavaTraining Week4 - Spring Boot REST API
 
-🎯 目的
-	1.	JDK17＋Spring Boot 3の開発環境を自力で構築できる。
-	2.	Spring Initializrからプロジェクトを作成し、Controller層の最小APIを公開できる。
-	3.	curlやブラウザで動作確認し、再現可能なREADMEを書ける。
+Spring Boot を用いて、最小構成の REST API を作成する課題です。
+Hello API と簡単なタスク管理 API を実装しました。
 
-⸻
+---
 
-🔧 前提（インストール）
-	•	JDK 17（または 21）
-	•	IntelliJ IDEA（Community で可）または VS Code（拡張機能: Java / Spring Boot）
-	•	Git / GitHub アカウント
-	•	ビルドは Gradle か Maven のどちらかを選択（以降は両方の例を提示）
+## 開発環境
 
-⸻
+- Java: OpenJDK 21 (Temurin 21.0.9)
+- Spring Boot: 3.5.9
+- ビルドツール: Gradle 8.14.3(Gradle Wrapper 使用)
+- IDE: Visual Studio Code
+- OS: Windows
 
-📘 学習範囲（書籍）
-	•	『Spring Boot 3 プログラミング入門』：第1〜2章（プロジェクト作成〜Controllerの基本）
+## セットアップ手順
 
-⸻
+### リポジトリのクローン
 
-🧠 課題内容（提出必須）
+- git clone <https://github.com/k-hmmt011923/JavaTraining-Week4.git>
 
-課題①：プロジェクトを作成する
-	1.	Spring Initializr で新規プロジェクト作成
-	•	Language: Java
-	•	Spring Boot: 3.x
-	•	Project: Gradle or Maven
-	•	Dependencies: Spring Web（のみ）
-	2.	パッケージ名は com.example.hellospring とする
-	3.	起動確認して、http://localhost:8080/actuator/health が200を返すこと（Actuator未導入ならアプリの起動ログのスクショでも可）
+- cd JavaTraining-Week4
 
-起動コマンド例
-	•	Gradle: ./gradlew bootRun
-	•	Maven: ./mvnw spring-boot:run
+## アプリケーションの起動
 
-⸻
+# Gradle を使用
 
-課題②：Hello APIを作る（最小Controller）
-	•	HelloController を作成し、以下を実装
-	•	GET /hello → 文字列 "Hello, Spring Boot!" を返す
-	•	ブラウザまたは curl で動作確認
-	•	curl http://localhost:8080/hello
+- ./gradlew bootRun
 
-⸻
+- gradlew.bat bootRun(Windows の場合)
 
-課題③：タスクAPI（最小版 REST）
+## 動作確認手順
 
-目的：JSONの入出力と、Controllerの基本責務を体験する。
-	1.	エンドポイント仕様（メモリ保持でOK・DB不要）
-	•	GET /api/tasks
-	•	例）[{"id":1,"title":"buy milk"},{"id":2,"title":"read book"}]
-	•	POST /api/tasks
-	•	リクエスト例：{"title":"new task"}
-	•	返却例：{"id":3,"title":"new task"}
-	2.	データ保持はアプリ起動中のみで可（List<Task> を @Service で管理）
-	3.	バリデーション（最低限）
-	•	title が空文字やnullの場合はHTTP 400を返す
-	4.	パッケージ例
+# Hello API(ブラウザで確認)
 
-com.example.hellospring
-├─ HelloController.java
-├─ task/
-│   ├─ Task.java        （id, title）
-│   ├─ TaskService.java （List<Task>の管理）
-│   └─ TaskController.java（/api/tasksの入出力）
-└─ HellospringApplication.java
+- http://localhost:8080/hello
 
+-動作確認例-
 
+Hello, Spring Boot!
 
-動作確認例
+#　タスク作成(CLI で実行)
 
-# 作成
-curl -X POST -H "Content-Type: application/json" \
- -d '{"title":"new task"}' http://localhost:8080/api/tasks
+# POST
 
-# 一覧
+curl -X POST -H "Content-Type: application/json" -d '{"title":"タイトル"}' http://localhost:8080/api/tasks
+
+#　タスク一覧取得(CLI で実行)
+
+# GET
+
 curl http://localhost:8080/api/tasks
 
+[
+{"id":1,"title":"タイトル"}
+]
 
+# 起動確認（Actuator）
 
-⸻
+http://localhost:8080/actuator/health
 
-課題④（任意・発展）
-	•	DELETE /api/tasks/{id} を追加
-	•	PUT /api/tasks/{id} でタイトル更新
-	•	例外ハンドリング（存在しないIDなら404）
-	•	@Validated + @NotBlank で入力チェック
-	•	application.yml を導入し、serverポートを 8081 に変更してみる
+-動作確認例-
 
-⸻
+{"status":"UP"}
 
-📦 提出物
+## エラー発生時の対処
 
-以下構成のリポジトリを作成し、プルリクエストを作成してください。
-※フォルダ構成はSpring Initializrで作成されたものをベースとする。
-
-JavaTraining-Week4/
-├─ src/main/java/com/example/hellospring/...
-├─ README.md
-└─ screenshots/
-   ├─ run_server.png         ← 起動ログやIDEのRun画面
-   └─ curl_results.png       ← curlでの動作確認結果
-
-README.md（必須項目）
-	•	プロジェクト概要（1〜2行）
-	•	開発環境（JDK / IDE / ビルドツールのバージョン）
-	•	セットアップ手順
-	•	Gradle: ./gradlew bootRun（Windowsは gradlew.bat bootRun）
-	•	Maven: ./mvnw spring-boot:run
-	•	動作確認手順（/hello と /api/tasks の例）
-	•	エラーが出た場合の対処（自分が踏んだ内容を1〜3行で記載）
-
-⸻
-
-✨　提出方法
-
-以下リポジトリに、プルリクエストを作成する形で提出してください。
-また、提出方法の詳細は、以下課題提出方法をご参照ください。
-
-リポジトリ：
-[JavaTraining-Week4](https://github.com/Kohei-mana/JavaTraining-Week4.git)
-
-課題提出方法：
-[課題提出方法](https://github.com/Kohei-mana/JavaTraining-Week4/blob/main/%E6%8F%90%E5%87%BA%E6%89%8B%E9%A0%86%E6%9B%B8.md)
-
-⸻
-
-✅ 合格基準（チェックリスト）
-	•	./gradlew bootRun または ./mvnw spring-boot:run で起動できる
-	•	GET /hello がブラウザまたは curl で確認できる
-	•	POST /api/tasks → GET /api/tasks の一連の流れが成功する
-	•	バリデーション失敗時に HTTP 400 を返す
-	•	READMEの手順通りに再現できる（第三者が再現可能）
-
-⸻
-
-🕓 提出期限
-	•	第4週の最終日（日曜 23:59まで）
-	•	提出方法：GitHubリポジトリURLを提出フォームに登録
-
-⸻
-
-💡 ヒント
-	•	Controllerは「HTTPの入り口」、Serviceは「ロジック」、（今回は未使用だが）Repositoryは「データアクセス」という責務分離を意識
-	•	まずは最小で動かす → 小さく追加の順で進める
-	•	エラー時は起動ログとスタックトレースをREADMEに軽くメモしておくと、次週以降の自力調査が楽になります
-
+- PowerShell で curl を実行する際、JSON のクォートが崩れると、400 Bad Request が返却されたため、シングルクォートで囲む形に修正した。
+- Windows 環境では gradlew は ./gradlew ではなく gradlew.bat で実行する必要がある点に注意した。
