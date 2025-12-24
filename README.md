@@ -27,7 +27,7 @@ Hello API と簡単なタスク管理 API を実装しました。
 
 - ./gradlew bootRun
 
-- gradlew.bat bootRun(Windows の場合)
+- gradlew.bat bootRun (上記で実行できない場合)
 
 ## 動作確認手順
 
@@ -65,5 +65,8 @@ http://localhost:8080/actuator/health
 
 ## エラー発生時の対処
 
-- PowerShell で curl を実行する際、JSON のクォートが崩れると、400 Bad Request が返却されたため、シングルクォートで囲む形に修正した。
-- Windows 環境では gradlew は ./gradlew ではなく gradlew.bat で実行する必要がある点に注意した。
+## エラー発生時の対処
+
+- PowerShell で curl を用いて POST リクエストを送信した際、JSON の記述方法が正しくない場合に 400 Bad Request エラーが発生しました。
+
+- リクエストボディをシングルクォートで囲む形式に修正して、正しい JSON として送信することで処理が正常に行われること確認しました。
