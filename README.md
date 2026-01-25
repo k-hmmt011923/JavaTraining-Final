@@ -1,72 +1,75 @@
-# JavaTraining Week4 - Spring Boot REST API
+# JavaTraining-Week4  
+- Spring Boot を用いたタスク管理API
 
-Spring Boot を用いて、最小構成の REST API を作成する課題です。
-Hello API と簡単なタスク管理 API を実装しました。
 
----
+## 概要
 
-## 開発環境
+- Spring Boot および Spring Data JPA を用いて、  タスクの作成・取得・更新・削除（CRUD）を行うRESTAPIを実装しました。
 
-- Java: OpenJDK 21 (Temurin 21.0.9)
-- Spring Boot: 3.5.9
-- ビルドツール: Gradle 8.14.3(Gradle Wrapper 使用)
-- IDE: Visual Studio Code
-- OS: Windows
 
-## セットアップ手順
+- 入力値のバリデーションや、存在しないリソースへのアクセス時には  適切な HTTPステータスコード（400 / 404）を返すようにしています。
 
-### リポジトリのクローン
 
-- git clone <https://github.com/k-hmmt011923/JavaTraining-Week4.git>
+### 環境構築手順
+- Java 21
+- Gradle
+- H2 Database（ファイルベース）
 
-- cd JavaTraining-Week4
 
-## アプリケーションの起動
-
-# Gradle を使用
+### アプリケーションの起動 Gradle を使用
 
 - ./gradlew bootRun
 
 - gradlew.bat bootRun (上記で実行できない場合)
 
-## 動作確認手順
 
-# Hello API(ブラウザで確認)
+## 実行確認手順
 
-- http://localhost:8080/hello
+### タスク一覧取得(GET)
+- curl http://localhost:8080/api/tasks
 
--動作確認例-
 
-Hello, Spring Boot!
+### タスク作成(POST)
+- curl -X POST http://localhost:8080/api/tasks \
+ -H "Content-Type: application/json" \
+ -d '{"title":"買い物"}'
 
-#　タスク作成(CLI で実行)
 
-# POST
+### タスク更新(PUT)
+- curl -X PUT http://localhost:8080/api/tasks/1 \
+ -H "Content-Type: application/json" \
+ -d '{"title":"買い物(更新)","completed":true}'
+ 
 
-curl -X POST -H "Content-Type: application/json" -d '{"title":"タイトル"}' http://localhost:8080/api/tasks
+###  タスク削除
+-curl -X DELETE http://localhost:8080/api/tasks/1
 
-#　タスク一覧取得(CLI で実行)
 
-# GET
+## 例外ハンドリングの動作例
+### 存在しないIDを指定した場合（404）
+- curl http://localhost:8080/api/tasks/9999
 
-curl http://localhost:8080/api/tasks
 
-[
-{"id":1,"title":"タイトル"}
-]
+- {"error":"Task not found"}
 
-# 起動確認（Actuator）
 
-http://localhost:8080/actuator/health
+### バリデーションエラー（400）
+- curl -X POST http://localhost:8080/api/tasks \
+ -H "Content-Type: application/json" \
+ -d '{"title":""}'
 
--動作確認例-
 
-{"status":"UP"}
+{
+  "error": "Validation failed",
+  "details": {
+    "title": "タイトルを入力してください"
+  }
+}
 
-## エラー発生時の対処
 
-## エラー発生時の対処
+## 発展課題
 
-- PowerShell で curl を用いて POST リクエストを送信した際、JSON の記述方法が正しくない場合に 400 Bad Request エラーが発生しました。
+- クエリパラメータ（sort / direction）を指定することで、タスク一覧の並び順を動的に変更できるようにしました。
 
-- リクエストボディをシングルクォートで囲む形式に修正して、正しい JSON として送信することで処理が正常に行われること確認しました。
+
+- curl "http://localhost:8080/api/tasks?sort=createdAt&direction=desc"
