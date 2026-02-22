@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout :: layout(~{::section})}">
+<section>
+  <h1>タスク一覧</h1>
+
+  <p><a th:href="@{/tasks/new}">新規作成</a></p>
+
+  <table border="1" cellpadding="8">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>タイトル</th>
+        <th>完了</th>
+        <th>操作</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr th:each="task : ${tasks}">
+        <td th:text="${task.id}"></td>
+        <td th:text="${task.title}"></td>
+        <td th:text="${task.completed ? '完了' : '未完了'}"></td>
+        <td>
+          <a th:href="@{|/tasks/${task.id}/edit|}">編集</a>
+
+          <form th:action="@{|/tasks/${task.id}/delete|}" method="post" style="display:inline;">
+            <button type="submit">削除</button>
+          </form>
+
+          <form th:action="@{|/tasks/${task.id}/toggle|}" method="post" style="display:inline;">
+            <button type="submit">完了切替</button>
+          </form>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</section>
+</html>

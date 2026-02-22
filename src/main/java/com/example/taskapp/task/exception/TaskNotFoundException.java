@@ -1,8 +1,12 @@
-package com.example.hellospring.task.exception;
+package com.example.taskapp.task.exception;
 
-// タスク未発見例外処理
 public class TaskNotFoundException extends RuntimeException {
+    private final Long id;
+
     public TaskNotFoundException(Long id) {
         super("Task not found: id=" + id);
+        this.id = id;
     }
+
+    public Long getId() { return id; }
 }

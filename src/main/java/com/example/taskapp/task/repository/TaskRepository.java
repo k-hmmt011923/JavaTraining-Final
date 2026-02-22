@@ -1,8 +1,8 @@
-package com.example.hellospring.task.repository;
+package com.example.taskapp.task.repository;
 
-import com.example.hellospring.task.entity.Task;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-// タスクリポジトリ
+import com.example.taskapp.task.entity.Task;
+
 public interface TaskRepository extends JpaRepository<Task, Long> {
 }
