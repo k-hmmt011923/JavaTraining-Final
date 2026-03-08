@@ -24,24 +24,25 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+
         http
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/login", "/css/**", "/h2-console/**").permitAll()
-                        .requestMatchers("/tasks/**").authenticated()
-                        .requestMatchers("/api/**").authenticated()
-                        .anyRequest().permitAll()
+                .requestMatchers("/login", "/css/**", "/h2-console/**").permitAll()
+                .requestMatchers("/api/**").permitAll()
+                .requestMatchers("/tasks/**").authenticated()
+                .anyRequest().permitAll()
                 )
                 .formLogin(form -> form
-                        .loginPage("/login")
-                        .defaultSuccessUrl("/tasks", true)
-                        .permitAll()
+                .loginPage("/login")
+                .defaultSuccessUrl("/tasks", true)
+                .permitAll()
                 )
                 .logout(Customizer.withDefaults())
                 .csrf(csrf -> csrf
-                        .ignoringRequestMatchers("/h2-console/**")
+                .ignoringRequestMatchers("/api/**", "/h2-console/**")
                 )
                 .headers(headers -> headers
-                        .frameOptions(frame -> frame.disable())
+                .frameOptions(frame -> frame.disable())
                 );
 
         return http.build();
