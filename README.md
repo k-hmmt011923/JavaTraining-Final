@@ -44,21 +44,22 @@ gradlew.bat bootRun　もしくは　.\gradlew.bat bootRun
 ## 動作確認手順 
 1. ブラウザで上で以下URLへアクセス 　
 
-http://localhost:8080/login 
+    http://localhost:8080/login 
 
 
 2. ログイン情報の入力 　
 
-username : testuser 　
-password : password 
+   username : testuser
+   password : password 
 
-3. ログインが成功すると http://localhost:8080/tasks にリダイレクトされます 
+3. ログインが成功すると http://localhost:8080/tasks 
+   にリダイレクトされます 
 
 ## 画面操作 
 
 ### タスク一覧(/tasks) 
 
-- 表示内容 
+表示内容 
 タスク一覧・新規登録・ID・タイトル・完了状態・編集・完了切替・削除 
 
 ### タスク登録(/tasks/new) 
@@ -148,6 +149,8 @@ H2 Database
 
 ## パッケージ構成
 
+
+```powershell
 JavaTraining-Final/
 ├─ src/
 │  ├─ main/
@@ -196,6 +199,7 @@ JavaTraining-Final/
 ├─ gradlew.bat
 ├─ settings.gradle
 └─ README.md
+```
 
 ## 既知の制約
 
